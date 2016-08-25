@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>ModelSpace Vis</title>
+    <link rel=StyleSheet href="/ModelSpace/css/style.css" type="text/css" media="screen">
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/ModelSpace/js/ModelSpaceVis.js"></script>
+    <script src="/ModelSpace/js/colorSearch.js"></script>
+    <script src="/ModelSpace/js/markUsers.js"></script>
+    <script src="/ModelSpace/js/userDots.js"></script>
+    <script src="/ModelSpace/js/userLines.js"></script>
+    <script src="/ModelSpace/js/mapColors.js"></script>
+    <script src="/ModelSpace/js/join.js"></script>
+    <script src="/ModelSpace/js/halfwayBump.js"></script>
+    <script src="/ModelSpace/js/sharedTokens.js"></script>
+
+    <!-- svg region to define arrow markers, with thanks to
+         http://apike.ca/prog_svg_markers.html -->
+    <svg height="0" width="0"> 
+      <defs>
+        <marker id="myMarker" viewBox="0 0 10 10" refX="1" refY="5" 
+                markerUnits="strokeWidth" orient="auto"
+                markerWidth="4" markerHeight="3">
+          <polyline points="0,0 10,5 0,10 1,5"  fill="black" />
+        </marker>
+        <marker id="inlineMarker" viewBox="0 0 10 10" refX="1" refY="5" 
+                markerUnits="userSpaceOnUse" orient="auto"
+                markerWidth="7" markerHeight="7">
+          <polyline points="0,0 10,5 0,10 1,5"  fill="black" />
+        </marker>
+        <marker id="circleMarker" viewBox="0 0 10 10" refX="0" refY="0" 
+                markerUnits="strokeWidth" orient="auto"
+                markerWidth="1" markerHeight="1">
+          <circle cx="0" cy="0" r="5" fill="red" />
+        </marker>
+        <marker id="XMarker" viewBox="0 0 10 10" refX="5" refY="5" 
+                markerUnits="strokeWidth" orient="auto"
+                markerWidth="1" markerHeight="1">
+          <line x1="0" y1="0" x2="10" y2="10" stroke="red" />
+    <line x1="0" y1="10" x2="10" y2="0" stroke="red" /> 
+        </marker>
+      </defs>
+    </svg>
+
+    <script>
+      var infoBox = 1;
+
+      var elem = function(sID) { return document.getElementById(sID); }
+      // return a dictionary of settings to pass on to the vis function
+      function getOptions() {
+          return { };
+      }
+
+
+      // update the info box for this line
+      function updateInfoBox(info) {
+          if (infoBox == 1) {
+              elem('Info1').innerHTML = info;
+              infoBox = 2;
+          } else {
+              elem('Info2').innerHTML = info;
+              infoBox = 1;
+          }
+      }
+      
+      // run on startup to create the user options
+      // example:
+      // <!--    <div class="SingleOption">
+      //  <input onclick=" type="checkbox" id="chkGrpAnalyst" checked="false"><u>Professionals</u><br>
+      //  </div>
+      //-->
+      function createUserOptionPanel() {
+          var dUsers = { 'Professionals': [3,10],
+                         'Interns': [1,2,5,9,12],
+                         'SandE': [4,7,8,11,13],
+                         'Other': [6] };
+          for (var userType in dUsers) {
+              var sOptName = 'opt' + userType;
+              var optDiv = d3.select('#UserOptionsHolder').append("div");
+              optDiv.attr("id", sOptName)
+                    .attr("class", "SingleOption");
+	      optDiv.append("input")
+                    .attr("id", "chkGrp" + userType)
+                    .attr("type", "checkbox")
+                    .attr("checked", "false")
+                    .attr("onclick", "markUsers('" + userType + "')");
+              optDiv.append("label")
+                    .html("<u>"+userType+":</u><br />");
+
+ 	      d3.select('#' + sOptName).selectAll("nodo")
+                .data(dUsers[userType]).enter()
+	        .append("div").attr("class", "opt")
+                .append("input")
+                .attr("onchange", function(d){return "updateVisVisible(" + d  + ")";})
+                .attr("type", "checkbox")
+                .attr("id", function(d){return "chkU" + d;})
+                .attr("checked", "false")
+              
+	      d3.select('#' + sOptName).selectAll(".opt")
+                .append("label")
+                .html(function(d){return "User " + d + "<br />";})
+          }
+      }
+
+      
+      // create option panel for colors
+      function createColorOptionPanel() {
+          var insights = [ "blkd", "kjflkjdi",
+                           "kdjs", "kjdfsodi",
+                           "kjdkjf", "kjdlkjddkddsjfs" ];
+
+          var optsDiv = d3.select('#divColorOptions')
+          for (iInsight in insights) {
+              var insight = insights[iInsight];
+              var sOptDiv = 'opt' + insight;
+              var optDiv = optsDiv.append("div");
+              optDiv.attr("id", sOptDiv);
+   
+              for (i = 0; i < 5; i++) {
+                  optDiv.append("input")
+                        //.attr("onchange", function(d){return "updateVisVisible(" + d  + ")";})
+                        .attr("type", "checkbox")
+                        //.attr("id", function(d){return "chkU" + d;})
+                        .attr("checked", "false")
+
+              }
+              optDiv.append("label")
+                    .html(insight);
+              
+          }
+           
+
+
+//                .attr("class", "SingleOption");
+//          optDiv.append("input")
+//                .attr("id", "chkGrp" + userType)
+//                .attr("type", "checkbox")
+//                .attr("checked", "false")
+//                .attr("onclick", "markUsers('" + userType + "')");
+//          optDiv.append("label")
+//                .html("<u>"+userType+":</u><br />");
+//
+//          d3.select('#' + sOptName).selectAll("nodo")
+//            .data(dUsers[userType]).enter()
+//            .append("div").attr("class", "opt")
+//            .append("input")
+//            .attr("onchange", function(d){return "updateVisVisible(" + d  + ")";})
+//            .attr("type", "checkbox")
+//            .attr("id", function(d){return "chkU" + d;})
+//            .attr("checked", "false")
+//          
+//          d3.select('#' + sOptName).selectAll(".opt")
+//            .append("label")
+//            .html(function(d){return "User " + d + "<br />";})
+
+      }
+
+      // get data from server and redraw the vis
+      var userdata = [];
+      function reDraw() {
+	 // serialize form's info to send to server
+         //params = $('#formOptions').serialize();
+         params = [];
+	
+         d3.xhr('/ModelSpace/data')
+           .responseType("json")
+           .header("Content-Type", "application/json")
+           .post(params, function(error, response) {
+               if (error) return console.warn(error);
+                  userdata = response.response["userdata"];
+                  refreshVis();
+           });
+      }
+    </script>
+
+  </head>
+
+  <body onload="createUserOptionPanel(); createColorOptionPanel(); reDraw();">
+    <div><h1  id='title'>Model Space </h1><div></div> <!--Sriram added this to include heading -->
+    <div id="MainBox">
+    <form>
+    <div id="LeftOptPanel" class="InfoBox LeftOpts">
+        <!--
+        <b>Color Options</b>
+        <div id="UserColorOpt" class="InfoBox SmallLeftOpt">
+            <input type="radio" name="radColorType" value="user" checked="true">
+ 	    <label for="chkUserColor"> By User</label>
+        </div>
+        <div id="InsightOpts" class="InfoBox">
+            <input type="radio" name="radColorType" value="insight">
+	    <label for="chkInsightColor">Insight Options</label>
+            <div id="divColorOptions"></div>
+        </div>
+        -->
+         <div id="lineDotSelector" class="InfoBox">
+            <b>Display Options</b> <br>
+            <!--Sriram: added this for check box -->
+              <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines"> Show Lines<br>
+              <input type="checkbox" name="showDots" value="dots" checked="checked" id="showDots"> Show Dots<br>
+              <input type="button" name="btnDisplayOptions" value="submit" onclick="refreshVis()">
+            
+          </div>
+        <div id="ColorSearch" class="InfoBox">
+        <b>Color by Search</b> <br>
+        Enter a Keyword or Document Name
+
+	    <input type="text" name="txtColorSearch" id="txtColorSearch"> <br>
+            <input type="button" name="btnColorSearchDismiss" value="dismiss"
+                   onclick="textSearchColorReset('#VIS')" >
+            <input type="button" name="btnColorSearch" value="search"
+                   onclick="textSearchColor('txtColorSearch', '#VIS');" >
+        </div>
+        <div id="SharedTokensBox" class="InfoBox" style="margin-top:20px">
+        <b>Shared Tokens</b> <br>
+        <div id="SharedTokens"></div>
+        <input type="button" value="clear"
+               onclick="refreshVis()"> <!--Sriram: Added this to remove the blue highlighting -->
+        </div>
+    </div>
+    </form>
+
+    <div id="VisHolder">
+    <svg id="VIS" width="800" height="800"></svg>
+    </div>
+
+<svg width="400" height="180">
+  <rect x="50" y="20" width="150" height="150"
+  style="fill:blue;stroke:pink;stroke-width:5;fill-opacity:0.1;stroke-opacity:0.9" />
+</svg>
+
+
+    <div id="Info1" class="InfoBox RightOpts">
+	Info Pane
+    </div>
+
+    <div id="Info2" class="InfoBox RightOpts">
+        Info Pane
+    </div>
+
+<!--<div class="OptionsHolder RightOpts">
+    <button type="button" id="GO"
+            onclick="reDraw()">
+      Show Me
+    </button>
+    </div>  
+-->
+
+     <!-- options holder right -->
+    <form id="formUserOptions">
+    <div id="UserOptionsHolder" class="OptionsHolder BottomOpts">
+
+    </div> <!-- options holder bottom -->
+    </form>  <!-- choice of users -->
+
+    </div> <!-- main box -->
+  </body>
+</html>

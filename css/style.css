@@ -1,0 +1,88 @@
+*{
+  font-family: Arial;
+}
+
+
+#title{
+  position: relative;
+  left: 45%;
+}
+
+#MainBox
+{
+  margin-left: auto;
+  margin-right: auto;
+  /*width: 1050px;*/
+  width: 1250px;
+  background: transparent;  /*ddd #528B8B; */
+  /*border: 2px; 
+  border-style: solid;
+  border-color: 66d; /* 0a0; */
+  padding: 0px 0px 0px 0px;
+  clear: both;
+}
+
+#VisHolder
+{ 
+  width: 800px;
+  float: left;
+  border: 1px;
+  border-style: solid;
+  border-color: #ccc;
+  background-color: #eef;
+}
+
+.OptionsHolder
+{ 
+  float: left;
+  border: 0px;
+  border-top: 1px;
+  border-top-style: solid;
+}
+
+.SingleOption
+{ 
+  width: 198px;
+  float: left;
+  border-bottom: 1px;
+  border-top: 0px;
+  border-left: 2px;
+  border-right: 0px;
+  border-style: solid;
+}
+
+.InfoBox
+{
+  float: left;
+  border: 0px;
+  border-top: 1px;
+  border-top-style: solid;
+  overflow: auto;
+  width: 200px;
+}
+
+.RightOpts
+{
+  margin-left: 10px;
+  height: 385px;
+}
+
+.LeftOpts
+{
+  margin-right: 10px;
+  height: 900px;
+}
+
+.SmallLeftOpt
+{
+  overflow: hidden;
+  margin-right: 10px;
+  height: 20px;
+}
+
+.BottomOpts
+{
+  /* margin-left: 210px; */
+  margin-top: 20px;
+  width: 800px
+}
