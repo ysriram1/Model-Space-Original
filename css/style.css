@@ -57,8 +57,21 @@
   border: 0px;
   border-top: 1px;
   border-top-style: solid;
+  margin-top: 20px;
+  padding-top: 4px;
   overflow: auto;
   width: 200px;
+}
+
+.InfoBoxContainer
+{
+  padding-top: 0px;
+  border-top: 0px;
+}
+
+.TopInfoBox
+{ 
+  margin-top: 0px;
 }
 
 .RightOpts

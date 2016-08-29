@@ -181,7 +181,7 @@
     <div><h1  id='title'>Model Space </h1><div></div> <!--Sriram added this to include heading -->
     <div id="MainBox">
     <form>
-    <div id="LeftOptPanel" class="InfoBox LeftOpts">
+    <div id="LeftOptPanel" class="InfoBox TopInfoBox LeftOpts InfoBoxContainer">
         <!--
         <b>Color Options</b>
         <div id="UserColorOpt" class="InfoBox SmallLeftOpt">
@@ -194,7 +194,7 @@
             <div id="divColorOptions"></div>
         </div>
         -->
-         <div id="lineDotSelector" class="InfoBox">
+         <div id="lineDotSelector" class="InfoBox TopInfoBox">
             <b>Display Options</b> <br>
             <!--Sriram: added this for check box -->
               <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines"> Show Lines<br>
@@ -212,7 +212,7 @@
             <input type="button" name="btnColorSearch" value="search"
                    onclick="textSearchColor('txtColorSearch', '#VIS');" >
         </div>
-        <div id="SharedTokensBox" class="InfoBox" style="margin-top:20px">
+        <div id="SharedTokensBox" class="InfoBox">
         <b>Shared Tokens</b> <br>
         <div id="SharedTokens"></div>
         <input type="button" value="clear"
@@ -225,13 +225,7 @@
     <svg id="VIS" width="800" height="800"></svg>
     </div>
 
-<svg width="400" height="180">
-  <rect x="50" y="20" width="150" height="150"
-  style="fill:blue;stroke:pink;stroke-width:5;fill-opacity:0.1;stroke-opacity:0.9" />
-</svg>
-
-
-    <div id="Info1" class="InfoBox RightOpts">
+    <div id="Info1" class="InfoBox TopInfoBox RightOpts">
 	Info Pane
     </div>
 
