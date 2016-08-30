@@ -57,7 +57,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                                       .style("position", "absolute")
                                       .style("width", "200px")
                                       .style("background-color", "#ee0")
-                                      .style("pointer-events", "none");
+                                      .style("pointer-events", "none")
+                                      .style("padding","8px") //Sriram: Added this to include some padding on the boxes
+                                      .style("border-radius","10px");//Sriram: Added this to have rounded corners on the info boxes
 
     var svg = d3.select(anchorname)
       //.append("g") // svg group and .call are for zooming
@@ -68,9 +70,10 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
             .on("zoom", fZoom));
 
     svg.append("rect") // background rect means zoom affects whole area
-      .attr("width", W)
+      .attr("width", W) //W:800px, H:800px
       .attr("height", H)
       .attr("fill", "transparent")
+      .style("border", "2px solid #73AD21")
 
     // remove old dots and lines
     svg.selectAll(".dot").remove();
@@ -85,7 +88,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
        .x(function(d) { return fGetScaledX(d) ; })
        .y(function(d) { return fGetScaledY(d) ; })
        .interpolate("cardinal");
-    var fTwoSegments = function(ld) { // turn one linedatum into 2 segments
+    var fTwoSegments = function(ld) { // turn one linedatum into 2 fTwoSegmentsnts
        return [ { x:ld.x1, y:ld.y1 },
                 halfwayBump(ld, ld['backward']),
                 //{ x:ld.x1 + (ld.x2-ld.x1)/2, y:ld.y1 + (ld.y2-ld.y1)/2 },
@@ -102,7 +105,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                } else {
                  return dClrsUsers[d.user];
                } })
-       .attr("stroke-width", function(d){ //Added this to accomadate varying line width based on read count
+       .attr("stroke-width", function(d){ //Sriram:Added this to accomadate varying line width based on read count
             return 2.5+d.count/9;
        })
        .attr("marker-mid", "url(#inlineMarker)")

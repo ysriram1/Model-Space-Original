@@ -180,17 +180,24 @@ def lines(userdata, DFInfo, docs):
             
         elif 'GO1' in entry[1]:
             newEntry = {}
-            newEntry['terms1'] = termsList([ int(e[0]) for e in entry[2][0] ],
+            newEntry['<u>Terms1</u>'] = termsList([ int(e[0]) for e in entry[2][0] ],
                                            userdata['terms'])
-            lineInfo['GOs'].append(newEntry)
+            newEntryTxt = ""
+            for key, value in newEntry.items(): #Sriram: Changing this to make the output look better
+                newEntryTxt += '<br>'+str(key) + ': ' + str(value)            
+            lineInfo['GOs'].append(newEntryTxt)
 
         elif 'GO2' in entry[1]:
             newEntry = {}
-            newEntry['terms1'] = termsList([ int(e[0]) for e in entry[2][0][0] ],
+            newEntry['<u>Terms1</u>'] = termsList([ int(e[0]) for e in entry[2][0][0] ],
                                            userdata['terms'])
-            newEntry['terms2'] = termsList([ int(e[0]) for e in entry[2][0][1] ],
+            newEntry['<u>Terms2</u>'] = termsList([ int(e[0]) for e in entry[2][0][1] ],
                                            userdata['terms'])
-            lineInfo['GOs'].append(newEntry)
+            
+            newEntryTxt = ""
+            for key, value in newEntry.items(): #Sriram: Changing this to make the output look better
+                newEntryTxt += '<br>'+str(key) + ': ' + str(value)          
+            lineInfo['GOs'].append(newEntryTxt)          
 
         if 'GO' in entry[1]: # set end time (gets reset next go if no DF after)
             lineInfo['tEnd'] = entry[0]
@@ -231,13 +238,12 @@ def lines(userdata, DFInfo, docs):
     idxLastStart = 0
     visLines = []
     def textLineInfo(line):
-	duration = timeDuration(line['tStart'], line['tEnd'])
-        return "<u>From</u> " + str(line['tStart']) + " <u>for</u> " + str(duration) + "<br />" + \
-	       "<u>Read</u>: " + termsList(line['read'], userdata['terms']) + \
+	duration = timeDuration(line['tStart'], line['tEnd']) #Sriram [1:-1] added to remove quotes (at GOs, searches, obs)
+        return "<b>From</b> " + str(line['tStart']) + " <b>for</b> " + str(duration) + "<br />" + \
+	       "<b>Read</b>: " + termsList(line['read'], userdata['terms']) + \
                "<br />" + \
-               "<u>Searches</u>: " + str(line['search']) + "<br />" + \
-               "<u>GOs</u>: " + str(line['GOs']) + "<br />" + \
-               "<u>obs</u>: " + str(line['obs'])
+               "<b>Searches</b>: " + str(line['search'])[1:-1] + "<br />" + \
+               "<b>GOs</b>: " + str(line['GOs'])[2:-2] + "<br />" + "<b>Observations</b>: " + str(line['obs'])[1:-1]
     for iLine, line in enumerate(lLineInfo[:-1]): #not last one; it goes nowhere
         info = textLineInfo(line)
         lineStart = lLayouts[idxStartLayout]
