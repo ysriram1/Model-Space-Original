@@ -39,9 +39,21 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
         getY = function(d) {return d.y;},
         dotXs = dotdata.map(getX),
         dotYs = dotdata.map(getY);
-
+    if(!OPTS.groupChecked){
     var fClrsUsers = d3.scale.category20();
     dClrsUsers = mapColors(dotdata, fClrsUsers);
+    }
+
+    if(OPTS.groupChecked){//Sriram: if gorup is checked color selection process:
+    dUserGroup = {4:1, 7:1, 11:1, 13:1, 3:2, 10:2, 2:3, 9:3, 6:4}
+
+    //'SandE': [4,7,11,13]
+    //'Professionals': [3,10]
+    //'Interns': [2,9],
+    //'Other': [6]
+    var fClrsUsers = d3.scale.category20();
+    dClrsUsers = mapColors(dotdata, fClrsUsers);
+    }
 
     var xOffset = 10, yOffset = 10,
         dotDiam = 6, lineThick = 4;
@@ -111,11 +123,20 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
        .attr("stroke", function(d) {
 	       if (d.customColor) {
 		 return d.customColor;
-               } else {
+               } else { if(OPTS.lineColChecked){ //Sriram: This is added to change the coloring of the lines
+                colVal = Math.round(255/75 * (75-d.count));
+                return d3.rgb(colVal,colVal,colVal); //higher readcount means darker lines
+               }
+               if(OPTS.groupChecked){ //Sriram: this is done to group entire color the same
+                  return dClrsUsers[dUserGroup[d.user]];
+               }
                  return dClrsUsers[d.user];
                } })
        .attr("stroke-width", function(d){ //Sriram:Added this to accomadate varying line width based on read count
-            return 2.5+d.count/9;
+            if(OPTS.lineThickChecked){
+            return 2.5+d.count/7;}else{
+              return lineThick;
+            }
        })
        .attr("marker-mid", "url(#inlineMarker)")
        .style("fill", "transparent")
@@ -155,7 +176,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       .style("fill", function(d) {
 	               if (d.customColor) {
 		         return d.customColor;
-                       } else {
+                       } else { if(OPTS.groupChecked){ //Sriram: this is done to group entire color the same
+                  return dClrsUsers[dUserGroup[d.user]];
+               }
                          return dClrsUsers[d.user]; //{return d3.rgb("#777");}) 
                        } })  
        .on("click", function(d) { updateInfoBox(d.info);

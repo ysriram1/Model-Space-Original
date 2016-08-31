@@ -21,3 +21,11 @@ visInput1 = aggregateData1(sampleFile1)
 
 from ModelSpace_temp import aggregateData as aggregateData2
 visInput2 = aggregateData2(sampleFile2)
+
+maxCount = 0 
+for key in visInput1.keys():
+    for lstElem in visInput1[key]['lines']:
+        if lstElem['count'] > maxCount:
+            maxCount = lstElem['count']
+            
+print maxCount #68

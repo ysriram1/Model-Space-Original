@@ -103,8 +103,9 @@
 
 #VisHolder /*Sriram: Added this to have border for main vis holder;*/
 {
-  padding: 8px;
+  padding: 2px;
   border: 2px solid #000000;
+  background: #f2f2f2;
 }
 
 .opt /*Sriram: Adds additional padding to the individual options */
@@ -116,3 +117,7 @@
 {
   padding-bottom: 2px;
 }
+
+
+
+
