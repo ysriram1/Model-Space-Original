@@ -2,13 +2,21 @@
 
 function refreshVis() {
   if (userdata != []) {
+
     OPTS = getOptions();
-    clearInfoBox()
+    clearTokenBox();//Sriram:Added this to clear infoBox First 
     var lineChecked = document.getElementById('showLines').checked;
     var dotChecked = document.getElementById('showDots').checked;
-    
+    var groupChecked = document.getElementById('colorByGroup').checked;
+    var lineColChecked = document.getElementById('colorByCount').checked;
+    var lineThickChecked = document.getElementById('widthByCount').checked;
+
     OPTS.lineChecked = lineChecked;
     OPTS.dotChecked = dotChecked;
+    OPTS.groupChecked = groupChecked;
+    OPTS.lineColChecked = lineColChecked;
+    OPTS.lineThickChecked = lineThickChecked;
+
     drawVis(userdata, "#VIS", 800, 800, OPTS);
   }
 }

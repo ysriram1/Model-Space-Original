@@ -85,16 +85,27 @@
           for (var userType in dUsers) {
               var sOptName = 'opt' + userType;
               var optDiv = d3.select('#UserOptionsHolder').append("div");
+
               optDiv.attr("id", sOptName)
                     .attr("class", "SingleOption");
                     //.style('padding','5px');
-	      optDiv.append("input")
+	             optDiv.append("input")
                     .attr("id", "chkGrp" + userType)
                     .attr("type", "checkbox")
                     .attr("checked", "false")
                     .attr("onclick", "markUsers('" + userType + "')");
               optDiv.append("label")
                     .html("<b style='font-size:19px;'>"+userType+":</b><br />");
+              //optDiv.append("input")
+                //    .attr("id", "chkGrp" + userType)
+                  //  .attr('type',"checkbox")
+                    //.attr("class","colorAll")
+                    //.attr("checked", "true")
+                    //.attr("onclick", "colorUsers('" + userType + "')");
+              //optDiv.append("label")
+                //    .style('font-size','14')
+                  //  .html("Color By Group");
+
 
  	      d3.select('#' + sOptName).selectAll("nodo")
                 .data(dUsers[userType]).enter()
@@ -206,23 +217,27 @@
             <!--Sriram: added this for check box -->
               <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines"> Show Lines<br>
               <input type="checkbox" name="showDots" value="dots" checked="checked" id="showDots"> Show Dots<br>
-              <input type="button" name="btnDisplayOptions" value="submit" onclick="refreshVis()">
+              <input type="checkbox" name="colorByGroup" value="byGroup" id="colorByGroup"> Color by Group<br>
+              <input type="checkbox" name="lineColor" value="colorByCount" id="colorByCount"> Color by Read Count<br>
+              <input type="checkbox" name="lineWidth" value="widthByCount" id="widthByCount"> Width by Read Count<br>
+
+              <input style='margin-top:5px' type="button" name="btnDisplayOptions" value="Submit" onclick="refreshVis()">
             
           </div>
         <div id="ColorSearch" class="InfoBox">
         <b>Color by Search</b> <br>
         Enter a Keyword or Document Name
 
-	    <input type="text" name="txtColorSearch" id="txtColorSearch"> <br>
-            <input type="button" name="btnColorSearchDismiss" value="dismiss"
+	    <input style='margin-bottom:6px; margin-top:6px;' type="text" name="txtColorSearch" id="txtColorSearch"> <br>
+            <input type="button" name="btnColorSearchDismiss" value="Dismiss"
                    onclick="textSearchColorReset('#VIS')" >
-            <input type="button" name="btnColorSearch" value="search"
+            <input type="button" name="btnColorSearch" value="Search"
                    onclick="textSearchColor('txtColorSearch', '#VIS');" >
         </div>
         <div id="SharedTokensBox" class="InfoBox">
         <b>Shared Keywords</b> <br>
         <div id="SharedTokens"></div>
-        <input type="button" value="clear"
+        <input type="button" value="Clear"
                onclick="refreshVis()"> <!--Sriram: Added this to remove the blue highlighting -->
         </div>
     </div>
@@ -234,12 +249,16 @@
 
  <!-- Sriram: New Div created to add "clear" option -->
       <div id="Info1" class="InfoBox TopInfoBox RightOpts">
-  	       <b style='font-size:16px; padding-left: 3px;'> Info Pane 1</b>
+  	       <b style='font-size:16px; padding-left: 3px;'> Info Pane 1 </b>
       </div>
 
       <div id="Info2" class="InfoBox RightOpts">
-          <b style='font-size:16px; padding-left: 3px;'> Info Pane 2</b>
+          <b style='font-size:16px; padding-left: 3px;'> Info Pane 2 </b>
       </div>
+      <div id='clearInfo'>
+      <input style='margin-left:50px; margin-top:10px;' type="button" value="Clear Info Boxes" onclick="refreshVis()">
+      </div>
+
 <!--<div class="OptionsHolder RightOpts">
     <button type="button" id="GO"
             onclick="reDraw()">

@@ -44,6 +44,6 @@ function cleanLines(S) {
 
 
 //Sriram: Added this to clear infoBox
-function clearInfoBox(){
+function clearTokenBox(){
   return updateSharedTokens("")
 }
