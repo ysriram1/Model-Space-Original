@@ -3,6 +3,7 @@
 function refreshVis() {
   if (userdata != []) {
     OPTS = getOptions();
+    clearInfoBox()
     var lineChecked = document.getElementById('showLines').checked;
     var dotChecked = document.getElementById('showDots').checked;
     
@@ -73,7 +74,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       .attr("width", W) //W:800px, H:800px
       .attr("height", H)
       .attr("fill", "transparent")
-      .style("border", "2px solid #73AD21")
+
 
     // remove old dots and lines
     svg.selectAll(".dot").remove();
@@ -135,7 +136,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
        .data(dotdata)
        .enter().append("circle")
        .attr("class", function(d){str = d.info;
-                                    DFNo = str.slice(15,17);
+                                    DFNo = str.slice(17,19);
                                     return "dot user" + d.user +" DF"+ DFNo;
                                     
                             //      return "dot user" + d.user;
@@ -150,10 +151,10 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                          return dClrsUsers[d.user]; //{return d3.rgb("#777");}) 
                        } })  
        .on("click", function(d) { updateInfoBox(d.info);
-                                  newDfInfo = d.info.slice(24,9999999) //Sriram: Adding this to ignore "Top key words"
+                                  newDfInfo = d.info.slice(50,9999999) //Sriram: Adding this to ignore "Top key words"
                                   updateSharedTokens(newDfInfo, 'dot'); 
                                   str = d.info; console.log(str);
-                                  tempDFNo = str.slice(15,17);
+                                  tempDFNo = str.slice(17,19);
                                   tempName = ".dot.user" + d.user+".df"+tempDFNo; console.log(tempName); //creating temp identifier
                                   svg.selectAll(tempName)
                                       //.attr('r',12)
@@ -166,7 +167,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                divTooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-               divTooltip.html("<b>User " + d.user + "</b><br/>"+
+               divTooltip.html("<b style='font-size:20px;'>User " + d.user + "</b>"+
  			      d.info)
                       .style("left", (d3.event.pageX + 5) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");

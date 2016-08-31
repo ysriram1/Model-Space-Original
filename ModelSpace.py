@@ -92,7 +92,7 @@ def distanceFunctions(userdata, docs):
     # create set of DF info (a la return val) for all observed DFs
     DFInfo = [ (deltaSeconds(starttime, pair[1][0]),
                 lLayouts[i],
-                "<br>DF Number: " + str(i+1) + " <br /><br> <u>Top 10 Keywords</u>: <br>" +
+                "<br><b>DF Number " + str(i+1) + " </b><br> <br><b>Top 10 Keywords:</b> <br>" +
                   best10TermsText(pair[1][2], docs) )
                for i, pair in enumerate(GOnDFPairs) ]
 

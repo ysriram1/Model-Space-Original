@@ -41,3 +41,9 @@ function cleanLines(S) {
           .replace(/<br \/>/g, "<br>")
           .split("<br>");
 }
+
+
+//Sriram: Added this to clear infoBox
+function clearInfoBox(){
+  return updateSharedTokens("")
+}

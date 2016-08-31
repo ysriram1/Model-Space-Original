@@ -64,6 +64,12 @@
               infoBox = 1;
           }
       }
+
+      //Sriram:Clear Info box
+      function clearInfoBox() {
+            elem('Info1').innerHTML = '';
+            elem('Info2').innerHTML = '';
+      }
       
       // run on startup to create the user options
       // example:
@@ -72,22 +78,23 @@
       //  </div>
       //-->
       function createUserOptionPanel() {
-          var dUsers = { 'Professionals': [3,10],
-                         'Interns': [1,2,5,9,12],
-                         'SandE': [4,7,8,11,13],
+          var dUsers = { 'SandE': [4,7,11,13],
+                          'Professionals': [3,10],
+                         'Interns': [2,9], //Removed all the blank users
                          'Other': [6] };
           for (var userType in dUsers) {
               var sOptName = 'opt' + userType;
               var optDiv = d3.select('#UserOptionsHolder').append("div");
               optDiv.attr("id", sOptName)
                     .attr("class", "SingleOption");
+                    //.style('padding','5px');
 	      optDiv.append("input")
                     .attr("id", "chkGrp" + userType)
                     .attr("type", "checkbox")
                     .attr("checked", "false")
                     .attr("onclick", "markUsers('" + userType + "')");
               optDiv.append("label")
-                    .html("<u>"+userType+":</u><br />");
+                    .html("<b style='font-size:19px;'>"+userType+":</b><br />");
 
  	      d3.select('#' + sOptName).selectAll("nodo")
                 .data(dUsers[userType]).enter()
@@ -178,7 +185,7 @@
   </head>
 
   <body onload="createUserOptionPanel(); createColorOptionPanel(); reDraw();">
-    <div><h1  id='title'>Model Space </h1><div></div> <!--Sriram added this to include heading -->
+    <div><h1  id='title'>ModelSpace </h1><div></div> <!--Sriram added this to include heading -->
     <div id="MainBox">
     <form>
     <div id="LeftOptPanel" class="InfoBox TopInfoBox LeftOpts InfoBoxContainer">
@@ -213,7 +220,7 @@
                    onclick="textSearchColor('txtColorSearch', '#VIS');" >
         </div>
         <div id="SharedTokensBox" class="InfoBox">
-        <b>Shared Tokens</b> <br>
+        <b>Shared Keywords</b> <br>
         <div id="SharedTokens"></div>
         <input type="button" value="clear"
                onclick="refreshVis()"> <!--Sriram: Added this to remove the blue highlighting -->
@@ -225,14 +232,14 @@
     <svg id="VIS" width="800" height="800"></svg>
     </div>
 
-    <div id="Info1" class="InfoBox TopInfoBox RightOpts">
-	Info Pane
-    </div>
+ <!-- Sriram: New Div created to add "clear" option -->
+      <div id="Info1" class="InfoBox TopInfoBox RightOpts">
+  	       <b style='font-size:16px; padding-left: 3px;'> Info Pane 1</b>
+      </div>
 
-    <div id="Info2" class="InfoBox RightOpts">
-        Info Pane
-    </div>
-
+      <div id="Info2" class="InfoBox RightOpts">
+          <b style='font-size:16px; padding-left: 3px;'> Info Pane 2</b>
+      </div>
 <!--<div class="OptionsHolder RightOpts">
     <button type="button" id="GO"
             onclick="reDraw()">
