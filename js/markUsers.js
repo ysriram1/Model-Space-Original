@@ -7,7 +7,7 @@
     dUserGroups = {
       professionals: [3, 10],
       interns: [1, 2, 5, 9, 12],
-      sande: [4, 7, 8, 11, 13],
+      scientists: [4, 7, 8, 11, 13],
       other: [6]
     };
     bTurnOn = d3.select('#chkGrp' + T).property('checked');

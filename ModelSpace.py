@@ -6,6 +6,9 @@ import datetime as dt
 import pprint
 PP = pprint.PrettyPrinter(indent=2)
 
+
+
+# spec for fulldata
 # bring all the sources together
 # input is of the format:
 # { uid: {'layouts' -> [ (x,y) ],
@@ -22,6 +25,11 @@ PP = pprint.PrettyPrinter(indent=2)
 #                           }
 #        }
 # }
+# ---
+# spec for the output (visInput)
+# { uid: { 'DFs': [ ( time_as_float?, (x,y), disp_str ) ],
+#          'lines': linespec with coords and info
+#        }}
 # bring all the sources together and create line and dots
 # that will be shown in the visualization
 def aggregateData(fulldata):
@@ -53,6 +61,13 @@ def aggregateData(fulldata):
     
     return dUsrResult
 
+
+# reproject data (change projection info to the full data)
+# loads a fulldata spec (See above) and returns one with 
+# modified layouts
+def reprojectData(fulldata):
+    return
+    
 
 # takes user dict of full info and returns a list of all the observations
 def observationSet(fulldata):

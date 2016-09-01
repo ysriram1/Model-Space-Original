@@ -15,6 +15,25 @@ os.chdir('C:/Users/SYARLAG1/Desktop/Model-Space-Original')
 sampleFile1 = pickle.load(open('no15812_newproj.pickle'))
 sampleFile2 = pickle.load(open('userDisfunctionSpace.pickle'))
 
+# bring all the sources together
+# input is of the format:
+# { uid: {'layouts' -> [ (x,y) ],
+#         'terms' -> [ term ],
+#         'logs' -> [ (log tuple) ], *(dt, marker, [info])
+#         'observations' -> { 'comments': [ comments at end ],
+#                             'gender': 'f' or 'm',
+#                             'job': str,
+#                             'insight_names': [str]
+#                             'starttime': dt
+#                             'insights': [ { 'insights': { isightname: num },
+#                                             'notes': str,
+#                                             'time': dt } ]
+#                           }
+#        }
+# }
+# extract the distance functions per user
+
+
 
 from ModelSpace import aggregateData as aggregateData1
 visInput1 = aggregateData1(sampleFile1)

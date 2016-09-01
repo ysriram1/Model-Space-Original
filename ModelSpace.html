@@ -78,7 +78,7 @@
       //  </div>
       //-->
       function createUserOptionPanel() {
-          var dUsers = { 'SandE': [4,7,11,13],
+          var dUsers = { 'Scientists': [4,7,11,13],
                           'Professionals': [3,10],
                          'Interns': [2,9], //Removed all the blank users
                          'Other': [6] };
@@ -215,8 +215,21 @@
          <div id="lineDotSelector" class="InfoBox TopInfoBox">
             <b>Display Options</b> <br>
             <!--Sriram: added this for check box -->
-              <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines"> Show Lines<br>
-              <input type="checkbox" name="showDots" value="dots" checked="checked" id="showDots"> Show Dots<br>
+              <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines"> Lines:<br>
+              Shade By:
+              <select>
+                <option value="readCount_s">Read Count</option>
+                <option value="searchCount_s">Search Count</option>
+                <option value="moveCount_s">Move Count</option>
+              </select>
+              <br>
+              Width By:  
+              <select>
+                <option value="readCount_t">Read Count</option>
+                <option value="searchCount_t">Search Count</option>
+                <option value="moveCount_t">Move Count</option>
+              </select>
+              <input type="checkbox" name="showDots" value="dots" checked="checked" id="showDots"> Dots<br>
               <input type="checkbox" name="colorByGroup" value="byGroup" id="colorByGroup"> Color by Group<br>
               <input type="checkbox" name="lineColor" value="colorByCount" id="colorByCount"> Color by Read Count<br>
               <input type="checkbox" name="lineWidth" value="widthByCount" id="widthByCount"> Width by Read Count<br>
@@ -249,11 +262,11 @@
 
  <!-- Sriram: New Div created to add "clear" option -->
       <div id="Info1" class="InfoBox TopInfoBox RightOpts">
-  	       <b style='font-size:16px; padding-left: 3px;'> Info Pane 1 </b>
+  	       <b style='font-size:16px; padding-left: 3px;'> Info Box 1 </b>
       </div>
 
       <div id="Info2" class="InfoBox RightOpts">
-          <b style='font-size:16px; padding-left: 3px;'> Info Pane 2 </b>
+          <b style='font-size:16px; padding-left: 3px;'> Info Box 2 </b>
       </div>
       <div id='clearInfo'>
       <input style='margin-left:50px; margin-top:10px;' type="button" value="Clear Info Boxes" onclick="clearInfoBox()">
