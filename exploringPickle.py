@@ -44,7 +44,9 @@ visInput2 = aggregateData2(sampleFile2)
 maxCount = 0 
 for key in visInput1.keys():
     for lstElem in visInput1[key]['lines']:
-        if lstElem['count'] > maxCount:
-            maxCount = lstElem['count']
+        if lstElem['interactionCount'] > maxCount:
+            maxCount = lstElem['interactionCount']
             
-print maxCount #68
+print maxCount #68 for read
+print maxCount #20 for search
+print maxCount #21 for interaction

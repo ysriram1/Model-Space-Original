@@ -258,7 +258,7 @@ def lines(userdata, DFInfo, docs):
 	       "<b>Read</b>: " + termsList(line['read'], userdata['terms']) + \
                "<br />" + \
                "<b>Searches</b>: " + str(line['search'])[1:-1] + "<br />" + \
-               "<b>GOs</b>: " + str(line['GOs'])[2:-2] + "<br />" + "<b>Observations</b>: " + str(line['obs'])[1:-1]
+               "<b>Interactions</b>: " + str(line['GOs'])[2:-2] + "<br />" + "<b>Observations</b>: " + str(line['obs'])[1:-1]
     for iLine, line in enumerate(lLineInfo[:-1]): #not last one; it goes nowhere
         info = textLineInfo(line)
         lineStart = lLayouts[idxStartLayout]
@@ -282,7 +282,9 @@ def lines(userdata, DFInfo, docs):
             'x2': lineEnd[0],
             'y2': lineEnd[1],
             'info': info,
-            'count': len(info.split('<br />')[1].split(',')), ##Sriram: added this to also include count as one of the features
+            'readCount': len(info.split('<br />')[1].split(',')), ##Sriram: added this to also include count as one of the features
+            'searchCount': len(info.split('<br />')[2].split(',')),
+             'interactionCount': len(info.split('<br />')[3].split(',')),
             'backward': line['reset'] or line['undo']} )
 
     # add the last line as a phantom line; it represents what happened
@@ -318,7 +320,7 @@ def lastLineToDot(DFInfo, LineInfo):
 
 
 def addInitDot(DFInfo, initLayoutPt):
-    return [ (0, initLayoutPt, "Starting..." ) ] + DFInfo
+    return [ (0, initLayoutPt, "<br>Starting..." ) ] + DFInfo
 
 
 # get the delta seconds from two timestamps

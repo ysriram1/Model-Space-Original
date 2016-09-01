@@ -215,26 +215,29 @@
          <div id="lineDotSelector" class="InfoBox TopInfoBox">
             <b>Display Options</b> <br>
             <!--Sriram: added this for check box -->
-              <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines"> Lines:<br>
+              <input type="checkbox" name="showLines" value="lines" checked="checked" id="showLines" onclick="refreshVis()">Lines<br>
               Shade By:
-              <select>
+              <select style='margin-top:2px; margin-bottom: 3px'id="shadeOpts" onchange="refreshVis()">
+                <option value="none_s">None</option>
                 <option value="readCount_s">Read Count</option>
                 <option value="searchCount_s">Search Count</option>
                 <option value="moveCount_s">Move Count</option>
               </select>
               <br>
               Width By:  
-              <select>
+              <select style='margin-top:2px; margin-bottom: 3px' id="widthOpts" onchange="refreshVis()">
+                <option value="none_t">None</option>
                 <option value="readCount_t">Read Count</option>
                 <option value="searchCount_t">Search Count</option>
                 <option value="moveCount_t">Move Count</option>
               </select>
-              <input type="checkbox" name="showDots" value="dots" checked="checked" id="showDots"> Dots<br>
-              <input type="checkbox" name="colorByGroup" value="byGroup" id="colorByGroup"> Color by Group<br>
+             <input type="checkbox" name="showDots" value="dots" checked="checked" id="showDots" onclick="refreshVis()">Dots<br>
+             <input type="checkbox" name="colorByGroup" value="byGroup" id="colorByGroup" onclick="refreshVis()"> Color By Group<br>
+             <!-- <input type="checkbox" name="colorByGroup" value="byGroup" id="colorByGroup"> Color by Group<br>
               <input type="checkbox" name="lineColor" value="colorByCount" id="colorByCount"> Color by Read Count<br>
               <input type="checkbox" name="lineWidth" value="widthByCount" id="widthByCount"> Width by Read Count<br>
 
-              <input style='margin-top:5px' type="button" name="btnDisplayOptions" value="Submit" onclick="refreshVis()">
+              <input style='margin-top:5px' type="button" name="btnDisplayOptions" value="Submit" onclick="refreshVis()"> -->
             
           </div>
         <div id="ColorSearch" class="InfoBox">

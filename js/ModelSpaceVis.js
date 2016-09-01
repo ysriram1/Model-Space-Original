@@ -7,15 +7,34 @@ function refreshVis() {
     clearTokenBox();//Sriram:Added this to clear infoBox First 
     var lineChecked = document.getElementById('showLines').checked;
     var dotChecked = document.getElementById('showDots').checked;
+    
+    var shadeOpts = document.getElementById("shadeOpts");
+    var shadeState = shadeOpts.options[shadeOpts.selectedIndex].value;
+
+    var widthOpts = document.getElementById("widthOpts");
+    var widthState = widthOpts.options[widthOpts.selectedIndex].value;
+    
+
+
     var groupChecked = document.getElementById('colorByGroup').checked;
-    var lineColChecked = document.getElementById('colorByCount').checked;
-    var lineThickChecked = document.getElementById('widthByCount').checked;
+    //var lineColChecked = document.getElementById('colorByCount').checked;
+    //var lineThickChecked = document.getElementById('widthByCount').checked;
 
     OPTS.lineChecked = lineChecked;
     OPTS.dotChecked = dotChecked;
     OPTS.groupChecked = groupChecked;
-    OPTS.lineColChecked = lineColChecked;
-    OPTS.lineThickChecked = lineThickChecked;
+    
+    OPTS.lineColNoneChecked_s = shadeState == "none_s";
+    OPTS.lineColSearchChecked_s = shadeState == "searchCount_s";
+    OPTS.lineColReadChecked_s = shadeState == "readCount_s";
+    OPTS.lineColMoveChecked_s = shadeState == "moveCount_s";
+
+    OPTS.lineColNoneChecked_t = widthState == "none_t";
+    OPTS.lineColSearchChecked_t = widthState == "searchCount_t";
+    OPTS.lineColReadChecked_t = widthState == "readCount_t";
+    OPTS.lineColMoveChecked_t = widthState == "moveCount_t";
+
+    //OPTS.lineThickGOsChecked = lineThickChecked;
 
     drawVis(userdata, "#VIS", 800, 800, OPTS);
   }
@@ -121,22 +140,25 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
        .attr("class", function(d){return "line user" + d.user;})
       //.attr("d", function(d){return lineFunction(fTwoSegments(d));})
        .attr("stroke", function(d) {
-	       if (d.customColor) {
-		 return d.customColor;
-               } else { if(OPTS.lineColChecked){ //Sriram: This is added to change the coloring of the lines
-                colVal = Math.round(255/75 * (75-d.count));
-                return d3.rgb(colVal,colVal,colVal); //higher readcount means darker lines
-               }
-               if(OPTS.groupChecked){ //Sriram: this is done to group entire color the same
-                  return dClrsUsers[dUserGroup[d.user]];
-               }
-                 return dClrsUsers[d.user];
+	               if (d.customColor) {return d.customColor;}
+		            else {  //higher readcount means darker lines
+                  if(OPTS.lineColNoneChecked_s){if(!OPTS.groupChecked){return dClrsUsers[d.user];}else{return dClrsUsers[dUserGroup[d.user]];}}
+                  if(OPTS.lineColSearchChecked_s){colVal=Math.round(255/27 * (23-d.searchCount)); return d3.rgb(colVal,colVal,colVal);}
+                  if(OPTS.lineColReadChecked_s){colVal=Math.round(255/77 * (69-d.readCount)); return d3.rgb(colVal,colVal,colVal);}
+                  if(OPTS.lineColMoveChecked_s){colVal=Math.round(255/27 * (21-d.interactionCount)); return d3.rgb(colVal,colVal,colVal);}
+                  
+
+                  if(OPTS.groupChecked){ return dClrsUsers[dUserGroup[d.user]];} //Sriram: this is done to group entire color the same
+                                
+               
+                 //return dClrsUsers[d.user];
                } })
        .attr("stroke-width", function(d){ //Sriram:Added this to accomadate varying line width based on read count
-            if(OPTS.lineThickChecked){
-            return 2.5+d.count/7;}else{
-              return lineThick;
-            }
+
+          if(OPTS.lineColNoneChecked_t){return lineThick;}
+          if(OPTS.lineColSearchChecked_t){return 2.5+d.searchCount/2.8;}
+          if(OPTS.lineColReadChecked_t){return 2.5+d.readCount/9.5;}
+          if(OPTS.lineColMoveChecked_t){return 2.5+d.interactionCount/2;}
        })
        .attr("marker-mid", "url(#inlineMarker)")
        .style("fill", "transparent")
