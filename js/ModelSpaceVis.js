@@ -64,7 +64,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
     }
 
     if(OPTS.groupChecked){//Sriram: if gorup is checked color selection process:
-    dUserGroup = {4:1, 7:1, 11:1, 13:1, 3:2, 10:2, 2:3, 9:3, 6:4}
+    dUserGroup = {4:1, 7:1, 11:1, 13:1, 3:4, 10:4, 2:6, 9:6, 6:10}
 
     //'SandE': [4,7,11,13]
     //'Professionals': [3,10]

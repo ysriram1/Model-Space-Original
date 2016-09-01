@@ -34,6 +34,32 @@ sampleFile2 = pickle.load(open('userDisfunctionSpace.pickle'))
 # extract the distance functions per user
 
 
+#####Creating MDS projections after adding noise from the original pickle file###################
+from collections import defaultdict
+
+fullDFDict = defaultdict(list)
+
+for uid, userData in sampleFile1.items():
+    DFs = [ x[2] for x in userData["logs"] if x[1] == 'DF']
+    fullDFDict[uid].append(DFs)
+
+keyList = list(fullDFDict.keys())
+
+#Creating a numpy array:
+for userData in fullDFDict.values():
+    for 
+
+dfMat = np.array(fullDFDict.values())
+
+#sampleFile1[uid]["initLayoutPoint"] = _first off hte pile
+# count = 1
+# for uid, uiserData in sampleFiles1.items():
+#     numLayouts = len(userData["layouts"])
+#     userData["layouts"] = []
+#     for i in range(numLayouts):
+#         userData["layouts"].append = resultlist [count ]
+#         count ++
+###########
 
 from ModelSpace import aggregateData as aggregateData1
 visInput1 = aggregateData1(sampleFile1)
