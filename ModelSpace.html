@@ -109,7 +109,7 @@
 
  	      d3.select('#' + sOptName).selectAll("nodo")
                 .data(dUsers[userType]).enter()
-	        .append("div").attr("class", "opt")
+	        .append("div").attr("class", function(d){fullClass = "opt" + " u" + d; return fullClass;}) //added this to have specific selections
                 .append("input")
                 .attr("onchange", function(d){return "updateVisVisible(" + d  + ")";})
                 .attr("type", "checkbox")
