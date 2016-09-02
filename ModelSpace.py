@@ -65,12 +65,12 @@ def aggregateData(fulldata):
 # reproject data (change projection info to the full data)
 # loads a fulldata spec (See above) and returns one with 
 # modified layouts
-def reprojectData(fulldata):
+def reprojectData(fulldata): #not used
     return
     
 
 # takes user dict of full info and returns a list of all the observations
-def observationSet(fulldata):
+def observationSet(fulldata): #not used
     return []
     
     
