@@ -349,9 +349,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
 
       //Line Color:
-      function lineShadeSearch(x) {colVal=Math.round(255/27 * (23-x)); return d3.rgb(colVal,colVal,colVal);}
-      function lineShadeRead(x) {colVal=Math.round(255/77 * (69-x)); return d3.rgb(colVal,colVal,colVal);}
-      function lineShadeMove(x) {colVal=Math.round(255/27 * (21-x)); return d3.rgb(colVal,colVal,colVal);}
+      function lineShadeSearch(x) {return Math.round(255/27 * (23-x));}
+      function lineShadeRead(x) {return Math.round(255/77 * (69-x));}
+      function lineShadeMove(x) {return Math.round(255/27 * (21-x));}
 
       /*if (OPTS.lineColSearchChecked_s || OPTS.lineColReadChecked_s || OPTS.lineColMoveChecked_s) {
           legendBox = drawbox();
@@ -366,15 +366,28 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           currentRectLeftX -= singleLegendWidth + 10;
       }*/
+
+      /*
+          legendBox = drawbox();
+
+          addLegendBoxTitle(legendBox, "Move Count-Width");
+          drawShadedSizedLine(legendBox, 130, lineThickVal(2), true);
+          addLegendValue(legendBox, "2", true);
+          drawShadedSizedLine(legendBox, 130, lineThickVal(73), false);
+          addLegendValue(legendBox, "73", false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+
+      */
             // Search
       if (OPTS.lineColSearchChecked_s) {
           legendBox = drawbox();
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
           addLegendBoxTitle(legendBox, "Search-Shade");
-          drawShadedSizedDot(legendBox, lineShadeSearch(20), 6, true);
+          drawShadedSizedLine(legendBox, lineShadeSearch(20), 12, true);
           addLegendValue(legendBox, "20", true);
-          drawShadedSizedDot(legendBox, lineShadeSearch(0), 6, false);
+          drawShadedSizedLine(legendBox, lineShadeSearch(0), 12, false);
           addLegendValue(legendBox, "0", false);
 
           currentRectLeftX -= singleLegendWidth + 10;
@@ -385,9 +398,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
           addLegendBoxTitle(legendBox, "Read-Shade");
-          drawShadedSizedDot(legendBox, lineShadeRead(68), 6, true);
+          drawShadedSizedLine(legendBox, lineShadeRead(68), 12, true);
           addLegendValue(legendBox, "68", true);
-          drawShadedSizedDot(legendBox, lineShadeRead(22), 6, false);
+          drawShadedSizedLine(legendBox, lineShadeRead(22), 12, false);
           addLegendValue(legendBox, "22", false);
 
           currentRectLeftX -= singleLegendWidth + 10;
@@ -399,9 +412,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
           addLegendBoxTitle(legendBox, "Move-Shade");
-          drawShadedSizedDot(legendBox, lineShadeMove(21), 6, true);
+          drawShadedSizedLine(legendBox, lineShadeMove(21), 12, true);
           addLegendValue(legendBox, "21", true);
-          drawShadedSizedDot(legendBox, lineShadeMove(2), 6, false);
+          drawShadedSizedLine(legendBox, lineShadeMove(2), 12, false);
           addLegendValue(legendBox, "2", false);
 
           currentRectLeftX -= singleLegendWidth + 10;
@@ -439,9 +452,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
           addLegendBoxTitle(legendBox, "Search-Width");
-          drawShadedSizedDot(legendBox, lineThickSearch(20), 6, true);
+          drawShadedSizedLine(legendBox, 130, lineThickSearch(20), true);
           addLegendValue(legendBox, "20", true);
-          drawShadedSizedDot(legendBox, lineThickSearch(0), 6, false);
+          drawShadedSizedLine(legendBox, 130, lineThickSearch(0), false);
           addLegendValue(legendBox, "0", false);
 
           currentRectLeftX -= singleLegendWidth + 10;
@@ -453,9 +466,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
           addLegendBoxTitle(legendBox, "Read-Width");
-          drawShadedSizedDot(legendBox, lineThickRead(68), 6, true);
+          drawShadedSizedLine(legendBox, 130, lineThickRead(68), true);
           addLegendValue(legendBox, "68", true);
-          drawShadedSizedDot(legendBox, lineThickRead(22), 6, false);
+          drawShadedSizedLine(legendBox, 130, lineThickRead(22), false);
           addLegendValue(legendBox, "22", false);
 
           currentRectLeftX -= singleLegendWidth + 10;
@@ -467,9 +480,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
           addLegendBoxTitle(legendBox, "Move-Width");
-          drawShadedSizedDot(legendBox, lineThickMove(21), 6, true);
+          drawShadedSizedLine(legendBox, 130, lineThickMove(21), true);
           addLegendValue(legendBox, "21", true);
-          drawShadedSizedDot(legendBox, lineThickMove(2), 6, false);
+          drawShadedSizedLine(legendBox, 130, lineThickMove(2), false);
           addLegendValue(legendBox, "2", false);
 
           currentRectLeftX -= singleLegendWidth + 10;
