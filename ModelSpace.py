@@ -258,7 +258,7 @@ def lines(userdata, DFInfo, docs):
 	       "<b>Read</b>: " + termsList(line['read'], userdata['terms']) + \
                "<br />" + \
                "<b>Searches</b>: " + str(line['search'])[1:-1] + "<br />" + \
-               "<b>Interactions</b>: " + str(line['GOs'])[2:-2] + "<br />" + "<b>Observations</b>: " + str(line['obs'])[1:-1]
+               "<b>Moves</b>: " + str(line['GOs'])[2:-2] + "<br />" + "<b>Observations</b>: " + str(line['obs'])[1:-1]
     for iLine, line in enumerate(lLineInfo[:-1]): #not last one; it goes nowhere
         info = textLineInfo(line)
         lineStart = lLayouts[idxStartLayout]

@@ -14,11 +14,10 @@ function refreshVis() {
     var widthOpts = document.getElementById("widthOpts");
     var widthState = widthOpts.options[widthOpts.selectedIndex].value;
     
-
-
     var groupChecked = document.getElementById('colorByGroup').checked;
     //var lineColChecked = document.getElementById('colorByCount').checked;
     //var lineThickChecked = document.getElementById('widthByCount').checked;
+    var legendChecked = document.getElementById('legendShowYes').checked;
 
     OPTS.lineChecked = lineChecked;
     OPTS.dotChecked = dotChecked;
@@ -33,6 +32,9 @@ function refreshVis() {
     OPTS.lineColSearchChecked_t = widthState == "searchCount_t";
     OPTS.lineColReadChecked_t = widthState == "readCount_t";
     OPTS.lineColMoveChecked_t = widthState == "moveCount_t";
+
+    OPTS.showLegendYes = legendChecked;
+
 
     //OPTS.lineThickGOsChecked = lineThickChecked;
 
@@ -59,7 +61,8 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
         dotXs = dotdata.map(getX),
         dotYs = dotdata.map(getY);
     
-    dUserGroup = {4:1, 7:1, 11:1, 13:1, 3:4, 10:4, 2:6, 9:6, 6:10}
+    dUserGroup = {4:1, 7:1, 11:1, 13:1, 3:4, 10:4, 2:6, 9:6, 6:10};
+    dUserGroupAltColors = {4:1, 7:2, 11:3, 13:4, 3:5, 10:6, 2:7, 9:8, 6:9}; //Sriram: this is done to ensure the coloring order is met
 
     if(!OPTS.groupChecked){
     var fClrsUsers = d3.scale.category20();
@@ -69,8 +72,8 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       var userNumber = ".u"+key;
       //var childText = "<div style='background:'"
       var selectNode = d3.selectAll(".opt").filter(userNumber)
-                .style("border-radius","10px")
-                .style("background",dClrsUsers[key]);
+                .style("border-radius","3px")
+                .style("background",dClrsUsers[dUserGroupAltColors[key]]);
                /* .append("div")
                 .attr("class","userLegendColor")
                 .style("background",dClrsUsers[key])
@@ -98,26 +101,13 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       var userNumber = ".u"+key;
       //var childText = "<div style='background:'"
       var selectNode = d3.selectAll(".opt").filter(userNumber)
-                .style("border-radius","10px")
+                .style("border-radius","3px")
                 .style("background",dClrsUsers[dUserGroup[key]]);
-               /* .append("div")
-                .attr("class","userLegendColor")
-                .style("background",dClrsUsers[key])
-                .style("float","right");*/
-    
-
-      //.appendChild("div")
-        //        .style("background","dClrsUsers[key]")
-          //      .style("float","right");
 
     }
   
 
     }
-
-
-    
-
 
 
     var xOffset = 10, yOffset = 10,
@@ -189,7 +179,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
        .attr("stroke", function(d) {
 	               if (d.customColor) {return d.customColor;}
 		            else {  //higher readcount means darker lines
-                  if(OPTS.lineColNoneChecked_s){if(!OPTS.groupChecked){return dClrsUsers[d.user];}else{return dClrsUsers[dUserGroup[d.user]];}}
+                  if(OPTS.lineColNoneChecked_s){if(!OPTS.groupChecked){return dClrsUsers[dUserGroupAltColors[d.user]];}else{return dClrsUsers[dUserGroup[d.user]];}}
                   if(OPTS.lineColSearchChecked_s){colVal=Math.round(255/27 * (23-d.searchCount)); return d3.rgb(colVal,colVal,colVal);}
                   if(OPTS.lineColReadChecked_s){colVal=Math.round(255/77 * (69-d.readCount)); return d3.rgb(colVal,colVal,colVal);}
                   if(OPTS.lineColMoveChecked_s){colVal=Math.round(255/27 * (21-d.interactionCount)); return d3.rgb(colVal,colVal,colVal);}
@@ -218,7 +208,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
               divTooltip.html(d.info + "<br/>")
                      .style("left", (d3.event.pageX + 5) + "px")
                      .style("top", (d3.event.pageY - 28) + "px");
-              divTooltip.style("background-color", dClrsUsers[d.user]);
+              divTooltip.style("background-color", dClrsUsers[dUserGroupAltColors[d.user]]);
 	   })
        .on("mouseout", function(d) {
               divTooltip.transition()
@@ -246,7 +236,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                        } else { if(OPTS.groupChecked){ //Sriram: this is done to group entire color the same
                   return dClrsUsers[dUserGroup[d.user]];
                }
-                         return dClrsUsers[d.user]; //{return d3.rgb("#777");}) 
+                         return dClrsUsers[dUserGroupAltColors[d.user]]; //{return d3.rgb("#777");}) 
                        } })  
        .on("click", function(d) { updateInfoBox(d.info);
                                   newDfInfo = d.info.slice(50,9999999) //Sriram: Adding this to ignore "Top key words"
@@ -269,7 +259,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
  			      d.info)
                       .style("left", (d3.event.pageX + 5) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
-               divTooltip.style("background-color", dClrsUsers[d.user]);
+               divTooltip.style("background-color", dClrsUsers[dUserGroupAltColors[d.user]]);
            })
        .on("mouseout", function(d) {
                divTooltip.transition()
@@ -304,7 +294,10 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
        .style("stroke", d3.rgb(0,0,0))
        .style("stroke-width", 4)   
        .attr("transform", fOriginTransform);
-    
+
+    // show a legend for line and dot width and grayscale values
+    if(OPTS.showLegendYes){addLegend(svg, OPTS, W, H);}
+    if(!OPTS.showLegendYes){svg.selectAll(".legend-box").remove();}
 
     fZoom(lines); // initial positioning calculation
   
@@ -320,6 +313,190 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
     function fTransform(d) {
       return "translate(" + fGetScaledX(d) + "," + fGetScaledY(d) + ")";
+    }
+        // add a legend describing the values associated with different line/dot
+    // sizes and (grayscale) colors
+    function addLegend(svg, OPTS, W, H) {
+      var boxColor = d3.rgb(255, 255, 255);
+      var borderColor = d3.rgb(0, 0, 0);
+      var singleLegendWidth = 120;
+      var singleLegendHeight = 100;  
+      var edgeBuffer = 20;
+      var currentRectLeftX = W - edgeBuffer - singleLegendWidth;
+      var edgeOffset = 6;
+      var midMargin = 4;
+      var topMargin = 30;
+      var halfHeight = (singleLegendHeight - topMargin)/ 2;
+      var halfWidth = (singleLegendWidth - 2*edgeOffset)/2;
+      var lineWidth = singleLegendWidth/2 - 2*edgeOffset - midMargin;
+      
+      // remove old legends
+      svg.selectAll(".legend-box").remove();
+
+    OPTS.lineColSearchChecked_s = shadeState == "searchCount_s";
+    OPTS.lineColReadChecked_s = shadeState == "readCount_s";
+    OPTS.lineColMoveChecked_s = shadeState == "moveCount_s";
+
+    OPTS.lineColSearchChecked_t = widthState == "searchCount_t";
+    OPTS.lineColReadChecked_t = widthState == "readCount_t";
+    OPTS.lineColMoveChecked_t = widthState == "moveCount_t";
+
+
+      // for lines (shading)
+      //read
+      //move
+      //search
+      if (OPTS.lineColMoveChecked_s_l) {
+          legendBox = drawbox();
+         
+          // formula for intensity: 255/90 * (80-d.count)
+          // range is [2, 78] -> [221, 3]
+          addLegendBoxTitle(legendBox, "Move Count-Shade");
+          drawShadedSizedLine(legendBox, 221, 12, true);
+          addLegendValue(legendBox, 2, true);
+          drawShadedSizedLine(legendBox, 3, 12, false);
+          addLegendValue(legendBox, 78, false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+      }
+      // for lines (thickness)
+
+
+      //read
+      //move
+      //search
+
+          //if(OPTS.lineColSearchChecked_s){colVal=Math.round(255/27 * (23-d.searchCount)); return d3.rgb(colVal,colVal,colVal);}
+          //if(OPTS.lineColReadChecked_s){colVal=Math.round(255/77 * (69-d.readCount)); return d3.rgb(colVal,colVal,colVal);}
+          //if(OPTS.lineColMoveChecked_s){colVal=Math.round(255/27 * (21-d.interactionCount)); return d3.rgb(colVal,colVal,colVal);}
+      if (OPTS.lineColMoveChecked_t_l) {
+          legendBox = drawbox();
+
+          // formula for thickness: 2.5+d.count/8
+          // range is [2, 78] -> [2.75, 12.25]
+          addLegendBoxTitle(legendBox, "Move Count-Width");
+          drawShadedSizedLine(legendBox, 130, 2.75, true);
+          addLegendValue(legendBox, "2", true);
+          drawShadedSizedLine(legendBox, 130, 12.25, false);
+          addLegendValue(legendBox, "78", false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+      }
+          //if(OPTS.lineColSearchChecked_t){return 2.5+d.searchCount/2.8;}
+          //if(OPTS.lineColReadChecked_t){return 2.5+d.readCount/9.5;}
+          //if(OPTS.lineColMoveChecked_t){return 2.5+d.interactionCount/2;}
+      if (OPTS.lineColSearchChecked_t) {
+          legendBox = drawbox();
+
+          // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
+          function lineShadeSearch(x) { return 2.5+d.searchCount/2.8; }
+          addLegendBoxTitle(legendBox, "Search-Shade");
+          drawShadedSizedDot(legendBox, lineShadeSearch(20), 6, true);
+          addLegendValue(legendBox, "20", true);
+          drawShadedSizedDot(legendBox, lineShadeSearch(0), 6, false);
+          addLegendValue(legendBox, "0", false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+      }
+      // for dots (size)
+      if (OPTS.lineColReadChecked_t) {
+          legendBox = drawbox();
+
+          // formula for dot size: 31.5*Math.sqrt(d.acc-0.88)
+          function lineShadeRead(x) {return 2.5+d.readCount/9.5;}
+          // ? range is [0.85, 1.0] ?
+          addLegendBoxTitle(legendBox, "Read-Shade"); /// LEFT OFF HERE
+          drawShadedSizedDot(legendBox, 130, lineShadeRead(68), true);
+          addLegendValue(legendBox, "68", true);
+          drawShadedSizedDot(legendBox, 130, lineShadeRead(22), false);
+          addLegendValue(legendBox, "22", false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+      }
+        
+        function drawShadedSizedLine(drawBox, lineIntensity, lineThick, isTopLine) {
+            var lineX = edgeOffset;
+            var lineY = topMargin + halfHeight/2 - lineThick/2;
+            if (!isTopLine) { lineY += halfHeight; }
+            
+            drawBox.append("rect")
+                .attr("x", lineX)
+                .attr("y", lineY)
+                .attr("width", lineWidth)
+                .attr("height", lineThick)
+                .attr("fill", d3.rgb(lineIntensity, lineIntensity, lineIntensity));
+        }
+
+        function drawShadedSizedDot(drawBox, dotIntensity, radius, isTopDot) {
+            var dotX = edgeOffset + lineWidth/2;
+            var dotY = topMargin + halfHeight/2 - radius/2;
+            if (!isTopDot) { dotY += halfHeight; }
+            
+            if (dotIntensity > 250) { // draw a halo if dot will be too light
+              drawBox.append("circle")
+                .attr("cx", dotX)
+                .attr("cy", dotY)
+                .attr("r", radius + 1)
+                .attr("fill", d3.rgb(50, 50, 50));
+            }
+
+            drawBox.append("circle")
+                .attr("cx", dotX)
+                .attr("cy", dotY)
+                .attr("r", radius)
+                .attr("fill", d3.rgb(dotIntensity, dotIntensity, dotIntensity));
+        }
+
+        function addLegendValue(drawBox, txtValue, isTopLine) {
+            var lineX = edgeOffset + 2*midMargin + halfWidth + halfWidth/2;
+            var lineY = topMargin + halfHeight/2 - lineThick/2;
+            if (!isTopLine) { lineY += halfHeight; }
+
+            drawBox.append("text")
+                   .attr("x", lineX)
+                   .attr("y", lineY)
+                   .attr("text-anchor", "middle")
+                   .attr("dominant-baseline", "central")
+                   //.attr("dy", ".5em")
+                   .attr("font-family", "sans-serif")
+                   .attr("font-size", "13px")
+                   .attr("fill", "black")
+                   .text(txtValue)
+        }
+
+        function addLegendBoxTitle(drawBox, title) {
+            var lineX = edgeOffset + halfWidth;
+            var lineY = topMargin/2;
+            drawBox.append("text")
+                   .attr("x", lineX)
+                   .attr("y", lineY)
+                   .attr("text-anchor", "middle")
+                   .attr("dominant-baseline", "central")
+                   //.attr("dy", ".5em")
+                   .attr("font-family", "sans-serif")
+                   .style('font-weight', 'bold')
+                   .attr("font-size", "13px")
+                   .attr("fill", "black")
+                   .text(title)
+        }
+
+        function drawbox() {
+            var transstr = "translate("+ currentRectLeftX +","+
+                                      (H - singleLegendWidth - edgeBuffer)+")";
+            var newBox = svg.append("g")
+              .attr("class", "legend-box")
+              .attr("transform", transstr)
+
+            newBox.append("rect")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", singleLegendWidth)
+              .attr("height", singleLegendHeight)
+              .attr("fill", boxColor)
+              .attr("stroke", borderColor)
+
+            return newBox;
+      }
     }
 
 }

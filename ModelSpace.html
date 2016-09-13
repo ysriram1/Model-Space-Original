@@ -233,7 +233,12 @@
                 <option value="searchCount_t">Search Count</option>
                 <option value="moveCount_t">Move Count</option>
               </select>
-             
+             <br>
+             <br>
+             <div id="legendOpt">
+        Legend: <input type="radio" name = "legendShow" id="legendShowYes" value="yes" checked="checked" onchange="refreshVis()"> Yes 
+        <input type="radio" name = "legendShow" id="legendShowNo" value='no' onchange="refreshVis()"> No 
+        </div>
              
              <!-- <input type="checkbox" name="colorByGroup" value="byGroup" id="colorByGroup"> Color by Group<br>
               <input type="checkbox" name="lineColor" value="colorByCount" id="colorByCount"> Color by Read Count<br>
