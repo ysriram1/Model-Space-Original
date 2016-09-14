@@ -29,11 +29,14 @@ function refreshVis() {
     OPTS.lineColSearchChecked_s = shadeState == "searchCount_s";
     OPTS.lineColReadChecked_s = shadeState == "readCount_s";
     OPTS.lineColMoveChecked_s = shadeState == "moveCount_s";
+    OPTS.lineColTimeChecked_s = shadeState == "time_s";
+
 
     OPTS.lineColNoneChecked_t = widthState == "none_t";
     OPTS.lineColSearchChecked_t = widthState == "searchCount_t";
     OPTS.lineColReadChecked_t = widthState == "readCount_t";
     OPTS.lineColMoveChecked_t = widthState == "moveCount_t";
+    OPTS.lineColTimeChecked_t = widthState == "time_t";
 
     OPTS.showLegendYes = legendChecked;
 
@@ -185,7 +188,13 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                   if(OPTS.lineColSearchChecked_s){colVal=Math.round(255/27 * (23-d.searchCount)); return d3.rgb(colVal,colVal,colVal);}
                   if(OPTS.lineColReadChecked_s){colVal=Math.round(255/77 * (69-d.readCount)); return d3.rgb(colVal,colVal,colVal);}
                   if(OPTS.lineColMoveChecked_s){colVal=Math.round(255/27 * (21-d.interactionCount)); return d3.rgb(colVal,colVal,colVal);}
-                  
+                  if(OPTS.lineColTimeChecked_s){
+                    //<b>From</b> 15:53:00 <b>for</b> 0:10:15<br />
+                    hour = parseFloat(d.info.slice(31,33)); min = parseFloat(d.info.slice(34,36)); 
+                    sec = parseFloat(d.info.slice(37,39)); 
+                    colVal = Math.round(255 - hour*20 - min*3.9 - sec*1.5); if(colVal<0){colVal = 0;}
+                    return d3.rgb(colVal,colVal,colVal);
+                  }
 
                   if(OPTS.groupChecked){ return dClrsUsers[dUserGroup[d.user]];} //Sriram: this is done to group entire color the same
                                 
@@ -193,7 +202,13 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                  //return dClrsUsers[d.user];
                } })
        .attr("stroke-width", function(d){ //Sriram:Added this to accomadate varying line width based on read count
-
+          if(OPTS.lineColTimeChecked_t){
+                    hour = parseFloat(d.info.slice(31,33)); min = parseFloat(d.info.slice(34,36)); 
+                    sec = parseFloat(d.info.slice(37,39)); 
+                    console.log(hour, min, sec);
+                    console.log(2.5 + hour + min/5 + sec/15);
+                    return 2.5 + hour*2 + min/3.5 + sec/30;
+                  }
           if(OPTS.lineColNoneChecked_t){return lineThick;}
           if(OPTS.lineColSearchChecked_t){return 2.5+d.searchCount/2.8;}
           if(OPTS.lineColReadChecked_t){return 2.5+d.readCount/9.5;}
@@ -321,7 +336,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
     function addLegend(svg, OPTS, W, H) {
       var boxColor = d3.rgb(255, 255, 255);
       var borderColor = d3.rgb(0, 0, 0);
-      var singleLegendWidth = 120;
+      var singleLegendWidth = 140;
       var singleLegendHeight = 100;  
       var edgeBuffer = 20;
       var currentRectLeftX = W - edgeBuffer - singleLegendWidth;
@@ -352,7 +367,8 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       function lineShadeSearch(x) {return Math.round(255/27 * (23-x));}
       function lineShadeRead(x) {return Math.round(255/77 * (69-x));}
       function lineShadeMove(x) {return Math.round(255/27 * (21-x));}
-
+      function lineShadeTime(h,m,s){colVal = Math.round(255 - h*20 - m*3.9 - s*1.5); if(colVal<0){colVal = 0;}
+                                    return colVal;}
       /*if (OPTS.lineColSearchChecked_s || OPTS.lineColReadChecked_s || OPTS.lineColMoveChecked_s) {
           legendBox = drawbox();
          
@@ -419,6 +435,19 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           currentRectLeftX -= singleLegendWidth + 10;
       }
+      //Time
+      if (OPTS.lineColTimeChecked_s) {
+          legendBox = drawbox();
+
+          // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
+          addLegendBoxTitle(legendBox, "Search-Shade");
+          drawShadedSizedLine(legendBox, lineShadeTime(4,27,1), 12, true);
+          addLegendValue(legendBox, ">1000sec", true);
+          drawShadedSizedLine(legendBox, lineShadeTime(0,0,11), 12, false);
+          addLegendValue(legendBox, "11sec", false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+      }
 
 
       //if(OPTS.lineColSearchChecked_t){return 2.5+d.searchCount/2.8;}
@@ -430,6 +459,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       function lineThickSearch(x) {return 2.5+x/2.8;}
       function lineThickRead(x) {return 2.5+x/9.5;}
       function lineThickMove(x) {return 2.5+x/2;}
+      function lineThickTime(h,m,s) {return 2.5 + h*2 + m/3.5 + s/30;}
 
       /*if (OPTS.lineColSearchChecked_t || OPTS.lineColReadChecked_t || OPTS.lineColMoveChecked_t) {
           legendBox = drawbox();
@@ -487,6 +517,21 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
 
           currentRectLeftX -= singleLegendWidth + 10;
       }
+
+        //Time
+      if (OPTS.lineColTimeChecked_t) {
+          legendBox = drawbox();
+
+          // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
+          addLegendBoxTitle(legendBox, "Search-Width");
+          drawShadedSizedLine(legendBox, 130, lineThickTime(4,27,1), true);
+          addLegendValue(legendBox, ">1000sec", true);
+          drawShadedSizedLine(legendBox, 130, lineThickTime(0,0,11), false);
+          addLegendValue(legendBox, "11sec", false);
+
+          currentRectLeftX -= singleLegendWidth + 10;
+      }
+
 
 
 
