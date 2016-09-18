@@ -446,7 +446,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
           legendBox = drawbox();
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
-          addLegendBoxTitle(legendBox, "Search-Shade");
+          addLegendBoxTitle(legendBox, "Time-Shade");
           drawShadedSizedLine(legendBox, lineShadeTime(4,27,1), 12, true);
           addLegendValue(legendBox, ">1000sec", true);
           drawShadedSizedLine(legendBox, lineShadeTime(0,0,11), 12, false);
@@ -529,7 +529,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
           legendBox = drawbox();
 
           // formula for intensity: 255-Math.round(255*(d.acc-0.895)*8.5)
-          addLegendBoxTitle(legendBox, "Search-Width");
+          addLegendBoxTitle(legendBox, "Time-Width");
           drawShadedSizedLine(legendBox, 130, lineThickTime(4,27,1), true);
           addLegendValue(legendBox, ">1000sec", true);
           drawShadedSizedLine(legendBox, 130, lineThickTime(0,0,11), false);
