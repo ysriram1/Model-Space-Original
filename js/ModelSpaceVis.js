@@ -88,9 +88,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                 .style("top","-17")
                 .style("border-radius","2px")
                 .style("background",dClrsUsers[dUserGroupAltColors[key]]);
-
-    }
-
+        }
     }
 
     if(OPTS.groupChecked){//Sriram: if gorup is checked color selection process:
@@ -119,9 +117,7 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
                 .style("border-radius","2px")
                 .style("background",dClrsUsers[dUserGroup[key]]);
 
-    }
-  
-
+      }
     }
 
 
