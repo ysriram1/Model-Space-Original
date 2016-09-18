@@ -73,21 +73,21 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
     var fClrsUsers = d3.scale.category20();
     dClrsUsers = mapColors(dotdata, fClrsUsers);
     //color the users according to their number
+    d3.selectAll(".opt").selectAll(".userLegendBox").remove();
+
     for (var key in dUserGroup){
       var userNumber = ".u"+key;
       //var childText = "<div style='background:'"
       var selectNode = d3.selectAll(".opt").filter(userNumber)
-                .style("border-radius","3px")
+                .append("div")
+                .attr("class","userLegendBox")
+                .style("width","30")
+                .style("height","15px")
+                .style("position","relative")
+                .style("right", "-100")
+                .style("top","-17")
+                .style("border-radius","2px")
                 .style("background",dClrsUsers[dUserGroupAltColors[key]]);
-               /* .append("div")
-                .attr("class","userLegendColor")
-                .style("background",dClrsUsers[key])
-                .style("float","right");*/
-    
-
-      //.appendChild("div")
-        //        .style("background","dClrsUsers[key]")
-          //      .style("float","right");
 
     }
 
@@ -99,6 +99,9 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
     //'Professionals': [3,10]
     //'Interns': [2,9],
     //'Other': [6]
+   d3.selectAll(".opt").selectAll(".userLegendBox").remove();
+
+
     var fClrsUsers = d3.scale.category20();
     dClrsUsers = mapColors(dotdata, fClrsUsers);
 
@@ -106,7 +109,14 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       var userNumber = ".u"+key;
       //var childText = "<div style='background:'"
       var selectNode = d3.selectAll(".opt").filter(userNumber)
-                .style("border-radius","3px")
+                .append("div")
+                .attr("class","userLegendBox")
+                .style("width","30")
+                .style("height","15px")
+                .style("position","relative")
+                .style("right", "-100")
+                .style("top","-17")
+                .style("border-radius","2px")
                 .style("background",dClrsUsers[dUserGroup[key]]);
 
     }
