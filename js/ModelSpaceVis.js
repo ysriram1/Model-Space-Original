@@ -231,7 +231,11 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
               divTooltip.html(d.info + "<br/>")
                      .style("left", (d3.event.pageX + 5) + "px")
                      .style("top", (d3.event.pageY - 28) + "px");
-              divTooltip.style("background-color", dClrsUsers[dUserGroupAltColors[d.user]]);
+              divTooltip.style("background-color", function(){
+              if(OPTS.groupChecked){ //Sriram: this is done to group entire color the same
+                  return dClrsUsers[dUserGroup[d.user]];
+               }
+                else{return dClrsUsers[dUserGroupAltColors[d.user]];}})
 	   })
        .on("mouseout", function(d) {
               divTooltip.transition()
@@ -282,7 +286,12 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
  			      d.info)
                       .style("left", (d3.event.pageX + 5) + "px")
                       .style("top", (d3.event.pageY - 28) + "px");
-               divTooltip.style("background-color", dClrsUsers[dUserGroupAltColors[d.user]]);
+               divTooltip.style("background-color", function(){
+                console.log(d);
+              if(OPTS.groupChecked){ //Sriram: this is done to group entire color the same
+                  return dClrsUsers[dUserGroup[d.user]];
+               }
+                else{return dClrsUsers[dUserGroupAltColors[d.user]];}});
            })
        .on("mouseout", function(d) {
                divTooltip.transition()
