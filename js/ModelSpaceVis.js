@@ -80,8 +80,8 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       //var childText = "<div style='background:'"
       var selectNode = d3.selectAll(".opt").filter(userNumber)
 	.insert("div", ":first-child").style("width", 140).style("clear", "both")
+                .attr("class","userLegendBox")
                 .append("div")
-                //.attr("class","userLegendBox")
                 .style("width","30")
                 .style("height","14px")
                 .style("float", "right")
@@ -110,13 +110,16 @@ function drawVis(userdata, anchorname, W, H, OPTS) {
       var userNumber = ".u"+key;
       //var childText = "<div style='background:'"
       var selectNode = d3.selectAll(".opt").filter(userNumber)
-                .append("div")
+.insert("div", ":first-child").style("width", 140).style("clear", "both")
                 .attr("class","userLegendBox")
+                .append("div")
                 .style("width","30")
-                .style("height","15px")
-                .style("position","relative")
-                .style("right", "-100")
-                .style("top","-17")
+                .style("height","14px")
+                .style("float", "right")
+                .style("padding-top", "2px")
+                //.style("position","relative")
+                //.style("right", "-100")
+                //.style("top","-17")
                 .style("border-radius","2px")
                 .style("background",dClrsUsers[dUserGroup[key]]);
 
